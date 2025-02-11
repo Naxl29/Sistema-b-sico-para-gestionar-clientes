@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 11-02-2025 a las 15:04:01
+-- Tiempo de generación: 11-02-2025 a las 16:29:38
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -39,14 +39,16 @@ CREATE TABLE `clientes` (
 --
 
 CREATE TABLE `personas` (
-  `ID` int NOT NULL DEFAULT '0',
-  `Primer Nombre` varchar(50) NOT NULL DEFAULT '',
-  `Segundo Nombre` varchar(50) NOT NULL DEFAULT '',
-  `Documento` int NOT NULL DEFAULT '0',
-  `Correo electronico` varchar(50) DEFAULT NULL,
-  `Telefono` int NOT NULL DEFAULT '0',
-  `Edad` int DEFAULT NULL,
-  `Genero` int NOT NULL DEFAULT '0'
+  `id` int NOT NULL,
+  `primer nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `segundo nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `primer apellido` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `segundo apellido` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `documento` int NOT NULL,
+  `correo electronico` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `telefono` int NOT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `genero` enum('F','M') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -64,8 +66,26 @@ ALTER TABLE `clientes`
 -- Indices de la tabla `personas`
 --
 ALTER TABLE `personas`
-  ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `Documento` (`Documento`);
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD UNIQUE KEY `Documento` (`documento`) USING BTREE,
+  ADD UNIQUE KEY `telefono` (`telefono`),
+  ADD UNIQUE KEY `correo electronico` (`correo electronico`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `personas`
+--
+ALTER TABLE `personas`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -75,7 +95,7 @@ ALTER TABLE `personas`
 -- Filtros para la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  ADD CONSTRAINT `FK_clientes_persona` FOREIGN KEY (`id_persona`) REFERENCES `personas` (`ID`);
+  ADD CONSTRAINT `FK_clientes_personas` FOREIGN KEY (`id_persona`) REFERENCES `personas` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
